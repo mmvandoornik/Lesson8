@@ -1,0 +1,64 @@
+---
+title: "Exercise lesson 8"
+author: "Maarten van Doornik"
+date: "19 januari 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r main, echo=FALSE, include=FALSE}
+source('main.R')
+```
+
+## Plot the relationship between Landsat bands and VCF tree cover
+
+These plots show the correlation between the landsat bands and the VCF tree cover:
+
+```{r alldata, echo=FALSE}
+pairs(alldata)
+```
+
+The plots show us that especially band 4 has a low correlation with the other bands and with the VCF tree cover. The other bands seem to be highly correlated.
+
+## Linear model
+
+Next, a linear model was generated to predict the VCF tree cover from the different landsat band. Below is a summary of this linear model:
+
+```{r linmod}
+summary(linmod)
+```
+
+## Pedicted vs observed VCF tree cover
+
+With this linear model, the VCF tree cover was predicted for the whole area and compared tot the observed tree cover. Below is a plot of the comparison of both maps:
+
+```{r VCFrasters, echo=FALSE}
+levelplot(VCFrasters, col.regions=rev(terrain.colors(255)))
+```
+
+This map shows the difference between the two maps:
+
+```{r diff, echo=FALSE}
+plot(diff, main='Difference between predicted and observed tree cover')
+```
+
+## RMSE
+
+Then the Root mean Squared Error (RMSE) was calculated for the predicted VCF tree cover:
+
+```{r rmse}
+print(rmse)
+```
+
+## RMSE for different land cover classes
+
+Finally the RMSE was calculated for the different land cover classes cropland, forest and wetland. 
+
+```{r rmse_head, echo=FALSE}
+head(df_rmse_classes)
+```
+
+From this it can be concluded that the error is different for different land cover classes. Forest shows a substantially lower error than wetland and cropland is in between. 
